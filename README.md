@@ -37,12 +37,62 @@ To make a request within you service, you can use one of the following:
 * `postData`: perform a `POST` request
 * `postJson`: perform a `POST` request **with a JSON body**
 
-# Usage example
-```
+# Example
+```dart
 import 'package:dio/dio.dart';
 import 'package:http_services/http_services.dart';
 
 import 'todos_service.dart';
+
+
+class TodosRequest extends RequestBase {
+  final int page;
+
+  TodosRequest(this.page) : assert(page != null && page > 0);
+  @override
+  String get endpoint => '/todos/$page';
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {};
+  }
+}
+
+
+class TodosResponse extends ResponseBase {
+  final int userId;
+  final int id;
+  final String title;
+  final bool completed;
+
+  TodosResponse({
+    this.userId,
+    this.id,
+    this.title,
+    this.completed,
+  });
+
+  factory TodosResponse.fromJson(Map<String, dynamic> json) => TodosResponse(
+        userId: json['userId'],
+        id: json['id'],
+        title: json['title'],
+        completed: json['completed'],
+      );
+}
+
+
+class TodosService extends HttpServiceBase {
+  TodosService(Dio dioInstance) : super(dioInstance);
+
+  Future<TodosResponse> getTodo(int page) {
+    final request = TodosRequest(page);
+
+    return getQuery(
+      request: request,
+      mapper: (json) => TodosResponse.fromJson(json),
+    );
+  }
+}
 
 void main() async {
   final dio = Dio(
