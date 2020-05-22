@@ -1,6 +1,11 @@
 # http_services
 A package to support the creation of Http services in a Dart application.
 
+# Features
+* convenient methods to perform HTTP requests
+* disposing a service will cleanup any pending requests, in order to avoid unwanted resources waste!
+* convenient models to have a standard for request and response objects 
+
 # RequestBase
 Every request should extend `RequestBase` and implement its overrides:
 * `endpoint`: Specify the path of the request

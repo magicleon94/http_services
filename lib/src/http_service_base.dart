@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:http_services/src/models/disposable.dart';
+import 'package:disposable_object/disposable_object.dart';
 import 'package:http_services/src/models/exceptions/api_exception.dart';
 import 'package:http_services/src/models/exceptions/http_service_exception.dart';
 import 'package:http_services/src/models/exceptions/response_mapping_exception.dart';
@@ -8,7 +8,7 @@ import 'package:http_services/src/models/request_base.dart';
 import 'package:http_services/src/models/response_base.dart';
 import 'package:meta/meta.dart';
 
-abstract class HttpServiceBase extends Disposable {
+abstract class HttpServiceBase extends DisposableObject {
   final Dio dioInstance;
   HttpServiceBase(this.dioInstance);
   @protected
