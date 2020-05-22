@@ -1,7 +1,6 @@
 name: http_services
-description: A Dart package to handle HTTP services.
-version: 1.0.0
-author: Antonello Galipò
+description: A Dart package based on Dio that provides base models to handle HTTP services requests.
+version: 1.0.0+1
 homepage: https://github.com/magicleon94/http_services
 
 environment:
