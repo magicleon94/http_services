@@ -34,4 +34,6 @@ class ApiException extends HttpServiceException {
       networkError: dioError.isNetworkError,
     );
   }
+
+  String toString() => httpMessage ?? super.toString();
 }
