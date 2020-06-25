@@ -1,4 +1,4 @@
-# 1.1.0
+# 1.1.1
 * `ApiException` `toString` method now returns the `httpMessage`.
 # 1.1.0
 * Separated `DisposableObject` dependency.
