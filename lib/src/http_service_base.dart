@@ -152,4 +152,175 @@ abstract class HttpServiceBase extends DisposableObject {
         );
     return _perform(performer, mapper, orElse, expectedStatusCode);
   }
+
+  /// Perform a query using the "DELETE" method.
+  /// The body of the request is extracted from [request]'s [toData] method
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> deleteData<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.delete(
+          request.endpoint,
+          data: request.toData(),
+          queryParameters: queryParameters,
+          options: options,
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
+
+  /// Perform a query using the "DELETE" method and using the JSON content type
+  /// The body of the request is extracted from [request]
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> deleteJson<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.delete(
+          request.endpoint,
+          data: request.toJson(),
+          queryParameters: queryParameters,
+          options: options?.merge(contentType: 'application/json') ??
+              Options(contentType: 'application/json'),
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
+
+  /// Perform a query using the "PUT" method.
+  /// The body of the request is extracted from [request]'s [toData] method
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> putData<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.put(
+          request.endpoint,
+          data: request.toData(),
+          queryParameters: queryParameters,
+          options: options,
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
+
+  /// Perform a query using the "PUT" method and using the JSON content type
+  /// The body of the request is extracted from [request]
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> putJson<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.put(
+          request.endpoint,
+          data: request.toJson(),
+          queryParameters: queryParameters,
+          options: options?.merge(contentType: 'application/json') ??
+              Options(contentType: 'application/json'),
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
+
+  /// Perform a query using the "PATCH" method.
+  /// The body of the request is extracted from [request]'s [toData] method
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> patchData<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.patch(
+          request.endpoint,
+          data: request.toData(),
+          queryParameters: queryParameters,
+          options: options,
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
+
+  /// Perform a query using the "PATCH" method and using the JSON content type
+  /// The body of the request is extracted from [request]
+  /// Optionally pass [queryParameters] for query parameters attached to the request
+  /// Use [mapper] to map the json response
+  /// Optionally you can use the [orElse] to map other kind of response
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  @protected
+  Future<T> patchJson<T extends ResponseBase>({
+    @required RequestBase request,
+    @required T Function(Map<String, dynamic>) mapper,
+    T Function(dynamic) orElse,
+    Options options,
+    bool cancelOnDispose = true,
+    Map<String, dynamic> queryParameters = const {},
+    int expectedStatusCode = 200,
+  }) async {
+    final performer = () => dioInstance.patch(
+          request.endpoint,
+          data: request.toJson(),
+          queryParameters: queryParameters,
+          options: options?.merge(contentType: 'application/json') ??
+              Options(contentType: 'application/json'),
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(performer, mapper, orElse, expectedStatusCode);
+  }
 }
