@@ -13,18 +13,26 @@ extension DioExtensions on DioError {
 }
 
 ///Thrown then something goes wrong with the request
-/// [networkError] signals if there was an outage in connection
-/// [httpCode] is the received HTTP status code
-/// [httpMessage] is the received HTTP status message
 class ApiException extends HttpServiceException {
+  /// [networkError] signals if there was an outage in connection
   final bool networkError;
+
+  /// [httpCode] is the received HTTP status code
   final int httpCode;
+
+  /// [httpMessage] is the received HTTP status message
   final String httpMessage;
+
+  /// [body] is the body of the HTTP error response.
+  /// It may be `null` if the request can't reach to
+  /// the http server, for example, occurring a dns error, network is not available.
+  final dynamic body;
 
   ApiException({
     this.networkError,
     this.httpCode,
     this.httpMessage,
+    this.body,
   });
 
   factory ApiException.fromDioError(DioError dioError) {
@@ -32,6 +40,7 @@ class ApiException extends HttpServiceException {
       httpCode: dioError.response?.statusCode ?? -1,
       httpMessage: dioError.response?.statusMessage ?? '-',
       networkError: dioError.isNetworkError,
+      body: dioError.response?.data,
     );
   }
 

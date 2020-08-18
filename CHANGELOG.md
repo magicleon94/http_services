@@ -1,3 +1,5 @@
+# 1.2.1
+* Added error response body.
 # 1.2.0
 * Added methods to perform `PUT`, `DELETE` and `PATCH`requests.
 # 1.1.1
