@@ -1,7 +1,7 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:http_services/src/models/exceptions/http_service_exception.dart';
+
+import 'socket_exception.dart' if (dart.library.io) 'dart:io';
 
 extension DioExtensions on DioError {
   bool get isNetworkError {

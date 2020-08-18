@@ -1,3 +1,5 @@
+# 1.2.2
+* Fixed web compatibility
 # 1.2.1
 * Added error response body.
 # 1.2.0
