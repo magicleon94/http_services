@@ -41,6 +41,12 @@ To make a request within you service, you can use one of the following:
 * `getQuery`: perform a `GET` request
 * `postData`: perform a `POST` request
 * `postJson`: perform a `POST` request **with a JSON body**
+* `putData`: perform a `PUT` request
+* `putJson`: perform a `PUT` request **with a JSON body**
+* `deleteData`: perform a `DELETE` request
+* `deleteJson`: perform a `DELETE` request **with a JSON body**
+* `patchData`: perform a `PATCH` request
+* `patchJson`: perform a `PATCH` request **with a JSON body**
 
 # Example
 ```dart
