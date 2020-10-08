@@ -1,5 +1,7 @@
 library http_services;
 
+export 'package:dio/dio.dart';
+
 export 'src/http_service_base.dart';
 export 'src/models/exceptions/api_exception.dart';
 export 'src/models/exceptions/http_service_exception.dart';

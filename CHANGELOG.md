@@ -1,3 +1,5 @@
+# 1.2.3
+* Dio exposed
 # 1.2.2
 * Fixed web compatibility
 # 1.2.1
