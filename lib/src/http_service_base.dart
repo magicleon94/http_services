@@ -43,19 +43,21 @@ abstract class HttpServiceBase extends DisposableObject {
     }
   }
 
-  T _mapResponse<T extends ResponseBase>(Response response,
-      T Function(Map<String, dynamic>) mapper, T Function(dynamic) orElse) {
+  T _mapResponse<T extends ResponseBase>(
+      Response response,
+      T Function(Map<String, dynamic>, Response response) mapper,
+      T Function(dynamic, Response response) orElse) {
     if (response.data is Map<String, dynamic>) {
-      return mapper(response.data);
+      return mapper(response.data, response);
     } else {
-      return orElse(response.data);
+      return orElse(response.data, response);
     }
   }
 
   Future<T> _perform<T extends ResponseBase>(
     Future<Response> Function() performer,
-    T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     int expectedStatusCode,
   ) async {
     try {
@@ -81,8 +83,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> getQuery<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     int expectedStatusCode = 200,
@@ -107,8 +109,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> postData<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -135,8 +137,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> postJson<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -164,8 +166,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> deleteData<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -192,8 +194,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> deleteJson<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -221,8 +223,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> putData<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -249,8 +251,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> putJson<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -278,8 +280,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> patchData<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
@@ -306,8 +308,8 @@ abstract class HttpServiceBase extends DisposableObject {
   @protected
   Future<T> patchJson<T extends ResponseBase>({
     @required RequestBase request,
-    @required T Function(Map<String, dynamic>) mapper,
-    T Function(dynamic) orElse,
+    @required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response) orElse,
     Options options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},

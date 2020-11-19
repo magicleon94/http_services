@@ -1,3 +1,5 @@
+# 1.2.4
+* Mapper and orElse now take the raw Response as parameter
 # 1.2.3
 * Dio exposed
 # 1.2.2
