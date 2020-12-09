@@ -28,20 +28,24 @@ class ApiException extends HttpServiceException {
   /// the http server, for example, occurring a dns error, network is not available.
   final dynamic body;
 
+  /// The original unparsed exception
+  final Exception error;
+
   ApiException({
     this.networkError,
     this.httpCode,
     this.httpMessage,
     this.body,
+    this.error,
   });
 
   factory ApiException.fromDioError(DioError dioError) {
     return ApiException(
-      httpCode: dioError.response?.statusCode ?? -1,
-      httpMessage: dioError.response?.statusMessage ?? '-',
-      networkError: dioError.isNetworkError,
-      body: dioError.response?.data,
-    );
+        httpCode: dioError.response?.statusCode ?? -1,
+        httpMessage: dioError.response?.statusMessage ?? '-',
+        networkError: dioError.isNetworkError,
+        body: dioError.response?.data,
+        error: dioError);
   }
 
   String toString() => httpMessage ?? super.toString();
