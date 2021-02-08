@@ -1,3 +1,5 @@
+# 1.2.5+1
+* Fixed README [#2](https://github.com/magicleon94/http_services/pull/2)
 # 1.2.5
 * ApiException now includes the original exception.
 # 1.2.4
