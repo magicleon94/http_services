@@ -100,7 +100,7 @@ class TodosService extends HttpServiceBase {
 
     return getQuery(
       request: request,
-      mapper: (json) => TodosResponse.fromJson(json),
+      mapper: (json, _) => TodosResponse.fromJson(json),
     );
   }
 }
