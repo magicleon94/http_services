@@ -38,7 +38,7 @@ void main() {
         .reply(200, successJson);
   });
 
-  group("HttpServices", () {
+  group("HttpServiceBase", () {
     test(".getQuery should work with default mapper", () async {
       TestResponse res = await testService.getTest(baseTestRoute);
       expect(res.id, successString);

@@ -20,7 +20,7 @@ void main() {
     dioAdapter.onGet(wrongJsonDataRoute).reply(200, {"id": "Not_A_Double"});
   });
 
-  group("HttpServices", () {
+  group("HttpServiceBase", () {
     test("should throw ApiException when DioError occures", () async {
       expect(
         () async => await testService.getErrorByRoute(dioErrorRoute),
