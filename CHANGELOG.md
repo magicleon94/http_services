@@ -1,3 +1,5 @@
+# 1.2.6
+* Added unit tests [#3](https://github.com/magicleon94/http_services/pull/3)
 # 1.2.5+1
 * Fixed README [#2](https://github.com/magicleon94/http_services/pull/2)
 # 1.2.5
