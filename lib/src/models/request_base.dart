@@ -1,5 +1,5 @@
 abstract class RequestBase<T> {
-  T toData() => null;
+  T? toData() => null;
   Map<String, dynamic> toJson();
   String get endpoint;
 }

@@ -5,9 +5,9 @@ import 'socket_exception.dart' if (dart.library.io) 'dart:io';
 
 extension DioExtensions on DioError {
   bool get isNetworkError {
-    return type == DioErrorType.CONNECT_TIMEOUT ||
-        type == DioErrorType.SEND_TIMEOUT ||
-        type == DioErrorType.RECEIVE_TIMEOUT ||
+    return type == DioErrorType.connectTimeout ||
+        type == DioErrorType.sendTimeout ||
+        type == DioErrorType.receiveTimeout ||
         error is SocketException;
   }
 }
@@ -15,13 +15,13 @@ extension DioExtensions on DioError {
 ///Thrown then something goes wrong with the request
 class ApiException extends HttpServiceException {
   /// [networkError] signals if there was an outage in connection
-  final bool networkError;
+  final bool? networkError;
 
   /// [httpCode] is the received HTTP status code
-  final int httpCode;
+  final int? httpCode;
 
   /// [httpMessage] is the received HTTP status message
-  final String httpMessage;
+  final String? httpMessage;
 
   /// [body] is the body of the HTTP error response.
   /// It may be `null` if the request can't reach to
@@ -29,7 +29,7 @@ class ApiException extends HttpServiceException {
   final dynamic body;
 
   /// The original unparsed exception
-  final Exception error;
+  final Exception? error;
 
   ApiException({
     this.networkError,
@@ -41,11 +41,12 @@ class ApiException extends HttpServiceException {
 
   factory ApiException.fromDioError(DioError dioError) {
     return ApiException(
-        httpCode: dioError.response?.statusCode ?? -1,
-        httpMessage: dioError.response?.statusMessage ?? '-',
-        networkError: dioError.isNetworkError,
-        body: dioError.response?.data,
-        error: dioError);
+      httpCode: dioError.response?.statusCode ?? -1,
+      httpMessage: dioError.response?.statusMessage ?? '-',
+      networkError: dioError.isNetworkError,
+      body: dioError.response?.data,
+      error: dioError,
+    );
   }
 
   String toString() => httpMessage ?? super.toString();

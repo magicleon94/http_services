@@ -1,11 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:http_services/http_services.dart';
 import 'package:test/test.dart';
 
-import 'package:dio/dio.dart';
-import 'package:http_services/http_services.dart';
-
-import 'test_classes/base_classes.dart';
 import 'base_test_constants.dart';
+import 'test_classes/base_classes.dart';
 
 void main() {
   final dio = Dio();
@@ -14,28 +13,62 @@ void main() {
 
   setUp(() {
     dio.httpClientAdapter = dioAdapter;
-    dioAdapter.onGet(baseTestRoute).reply(200, successJson);
-    dioAdapter.onGet(orElseTestRoute).reply(200, successString);
-    dioAdapter.onPost(baseTestRoute, data: requestJson).reply(200, successJson);
-    dioAdapter
-        .onPost(baseTestRoute, data: baseTestRoute)
-        .reply(200, successJson);
-    dioAdapter
-        .onPatch(baseTestRoute, data: requestJson)
-        .reply(200, successJson);
-    dioAdapter
-        .onPatch(baseTestRoute, data: baseTestRoute)
-        .reply(200, successJson);
-    dioAdapter.onPut(baseTestRoute, data: requestJson).reply(200, successJson);
-    dioAdapter
-        .onPut(baseTestRoute, data: baseTestRoute)
-        .reply(200, successJson);
-    dioAdapter
-        .onDelete(baseTestRoute, data: requestJson)
-        .reply(200, successJson);
-    dioAdapter
-        .onDelete(baseTestRoute, data: baseTestRoute)
-        .reply(200, successJson);
+    dioAdapter.onGet(
+      baseTestRoute,
+      (handler) => handler.reply(200, successJson),
+    );
+    dioAdapter.onGet(
+      orElseTestRoute,
+      (handler) => handler.reply(200, successString),
+    );
+    dioAdapter.onPost(
+        baseTestRoute, (handler) => handler.reply(200, successJson),
+        data: requestJson,
+        headers: {
+          Headers.contentTypeHeader: 'application/json',
+          Headers.contentLengthHeader: 15
+        });
+    dioAdapter.onPost(
+      baseTestRoute,
+      (handler) => handler.reply(200, successJson),
+      data: baseTestRoute,
+    );
+    dioAdapter.onPatch(
+        baseTestRoute, (handler) => handler.reply(200, successJson),
+        data: requestJson,
+        headers: {
+          Headers.contentTypeHeader: 'application/json',
+          Headers.contentLengthHeader: 15
+        });
+    dioAdapter.onPatch(
+      baseTestRoute,
+      (handler) => handler.reply(200, successJson),
+      data: baseTestRoute,
+    );
+    dioAdapter.onPut(
+        baseTestRoute, (handler) => handler.reply(200, successJson),
+        data: requestJson,
+        headers: {
+          Headers.contentTypeHeader: 'application/json',
+          Headers.contentLengthHeader: 15
+        });
+    dioAdapter.onPut(
+      baseTestRoute,
+      (handler) => handler.reply(200, successJson),
+      data: baseTestRoute,
+    );
+    dioAdapter.onDelete(
+        baseTestRoute, (handler) => handler.reply(200, successJson),
+        data: requestJson,
+        headers: {
+          Headers.contentTypeHeader: 'application/json',
+          Headers.contentLengthHeader: 15
+        });
+    dioAdapter.onDelete(
+      baseTestRoute,
+      (handler) => handler.reply(200, successJson),
+      data: baseTestRoute,
+    );
   });
 
   group("HttpServiceBase", () {

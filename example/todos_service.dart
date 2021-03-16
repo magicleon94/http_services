@@ -15,4 +15,14 @@ class TodosService extends HttpServiceBase {
       mapper: (json, _) => TodosResponse.fromJson(json),
     );
   }
+
+  Future<PostResponse> postBoh() {
+    final request = PostRequest();
+
+    return postJson(
+      request: request,
+      mapper: (json, _) => PostResponse(),
+      expectedStatusCode: 201,
+    );
+  }
 }

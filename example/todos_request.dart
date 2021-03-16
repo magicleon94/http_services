@@ -1,7 +1,7 @@
 import 'package:http_services/src/models/request_base.dart';
 
 class TodosRequest extends RequestBase {
-  final int page;
+  final int? page;
 
   TodosRequest(this.page) : assert(page != null && page > 0);
   @override
@@ -11,4 +11,12 @@ class TodosRequest extends RequestBase {
   Map<String, dynamic> toJson() {
     return {};
   }
+}
+
+class PostRequest extends RequestBase {
+  @override
+  String get endpoint => '/posts';
+
+  @override
+  Map<String, dynamic> toJson() => {};
 }

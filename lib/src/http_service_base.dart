@@ -46,23 +46,28 @@ abstract class HttpServiceBase extends DisposableObject {
   T _mapResponse<T extends ResponseBase>(
       Response response,
       T Function(Map<String, dynamic>, Response response) mapper,
-      T Function(dynamic, Response response) orElse) {
+      T Function(dynamic, Response response)? orElse) {
     if (response.data is Map<String, dynamic>) {
       return mapper(response.data, response);
     } else {
-      return orElse(response.data, response);
+      if (orElse != null) {
+        return orElse(response.data, response);
+      }
+      throw Exception(
+        'orElse mapping function must not be null for non json response.',
+      );
     }
   }
 
   Future<T> _perform<T extends ResponseBase>(
     Future<Response> Function() performer,
     T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
+    T Function(dynamic, Response response)? orElse,
     int expectedStatusCode,
   ) async {
     try {
       final response = await performer();
-      _assertStatusCode(expectedStatusCode, response.statusCode);
+      _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
       return _mapResponse(response, mapper, orElse);
     } on DioError catch (error) {
       throw ApiException.fromDioError(error);
@@ -82,10 +87,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> getQuery<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     int expectedStatusCode = 200,
   }) async {
@@ -108,10 +113,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> postData<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -136,10 +141,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> postJson<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -148,8 +153,12 @@ abstract class HttpServiceBase extends DisposableObject {
           request.endpoint,
           data: request.toJson(),
           queryParameters: queryParameters,
-          options: options?.merge(contentType: 'application/json') ??
-              Options(contentType: 'application/json'),
+          options: options?.copyWith(
+                contentType: 'application/json',
+              ) ??
+              Options(
+                contentType: 'application/json',
+              ),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
     return _perform(performer, mapper, orElse, expectedStatusCode);
@@ -165,10 +174,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> deleteData<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -193,10 +202,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> deleteJson<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -205,7 +214,7 @@ abstract class HttpServiceBase extends DisposableObject {
           request.endpoint,
           data: request.toJson(),
           queryParameters: queryParameters,
-          options: options?.merge(contentType: 'application/json') ??
+          options: options?.copyWith(contentType: 'application/json') ??
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
@@ -222,10 +231,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> putData<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -250,10 +259,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> putJson<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -262,7 +271,7 @@ abstract class HttpServiceBase extends DisposableObject {
           request.endpoint,
           data: request.toJson(),
           queryParameters: queryParameters,
-          options: options?.merge(contentType: 'application/json') ??
+          options: options?.copyWith(contentType: 'application/json') ??
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
@@ -279,10 +288,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> patchData<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -307,10 +316,10 @@ abstract class HttpServiceBase extends DisposableObject {
   /// [expectedStatusCode] to check the result of the request
   @protected
   Future<T> patchJson<T extends ResponseBase>({
-    @required RequestBase request,
-    @required T Function(Map<String, dynamic>, Response response) mapper,
-    T Function(dynamic, Response response) orElse,
-    Options options,
+    required RequestBase request,
+    required T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(dynamic, Response response)? orElse,
+    Options? options,
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
@@ -319,7 +328,7 @@ abstract class HttpServiceBase extends DisposableObject {
           request.endpoint,
           data: request.toJson(),
           queryParameters: queryParameters,
-          options: options?.merge(contentType: 'application/json') ??
+          options: options?.copyWith(contentType: 'application/json') ??
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );

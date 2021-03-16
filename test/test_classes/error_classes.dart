@@ -15,7 +15,7 @@ class ErrorRequest extends RequestBase {
 }
 
 class ErrorResponse extends ResponseBase {
-  final double id;
+  final double? id;
 
   ErrorResponse({this.id});
 
@@ -26,7 +26,7 @@ class ErrorResponse extends ResponseBase {
 class ErrorService extends HttpServiceBase {
   ErrorService(Dio dioInstance) : super(dioInstance);
 
-  Future<ErrorResponse> getErrorByRoute(String route, {int expectedCode}) {
+  Future<ErrorResponse> getErrorByRoute(String route, {int? expectedCode}) {
     final request = ErrorRequest(route);
     return getQuery(
       request: request,

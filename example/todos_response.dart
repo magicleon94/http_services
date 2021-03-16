@@ -1,10 +1,10 @@
 import 'package:http_services/src/models/response_base.dart';
 
 class TodosResponse extends ResponseBase {
-  final int userId;
-  final int id;
-  final String title;
-  final bool completed;
+  final int? userId;
+  final int? id;
+  final String? title;
+  final bool? completed;
 
   TodosResponse({
     this.userId,
@@ -20,3 +20,5 @@ class TodosResponse extends ResponseBase {
         completed: json['completed'],
       );
 }
+
+class PostResponse extends ResponseBase {}
