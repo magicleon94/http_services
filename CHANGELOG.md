@@ -1,3 +1,5 @@
+# 2.0.0-beta2
+Updated readme with some notes.
 # 2.0.0-beta1
 Added sound null safety.
 # 1.2.6
