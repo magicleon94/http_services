@@ -119,7 +119,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0-beta7"
+    version: "4.0.0"
   disposable_object:
     dependency: "direct main"
     description:
@@ -151,12 +151,10 @@ packages:
   http_mock_adapter:
     dependency: "direct dev"
     description:
-      path: "."
-      ref: "feature/nullsafety"
-      resolved-ref: "3f9f9e38c66f3cea42cb3965e1c14010b020f068"
-      url: "https://github.com/kuhnroyal/http-mock-adapter.git"
-    source: git
-    version: "1.0.0-nullsafety.1"
+      name: http_mock_adapter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   http_multi_server:
     dependency: transitive
     description:
@@ -219,7 +217,7 @@ packages:
       name: mockito
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
+    version: "5.0.3"
   node_preamble:
     dependency: transitive
     description:

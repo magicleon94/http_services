@@ -18,7 +18,10 @@ void main() {
         dioErrorRoute,
         (handler) => handler.throws(
           500,
-          DioError(error: "Test"),
+          DioError(
+            error: "Test",
+            requestOptions: RequestOptions(path: dioErrorRoute),
+          ),
         ),
       );
       dioAdapter.onGet(
