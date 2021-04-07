@@ -1,3 +1,6 @@
+# 2.0.0
+* Sound null safety migration
+* Added RequestCanceledException to catch when a request is canceled
 # 2.0.0-beta2
 Updated readme with some notes.
 # 2.0.0-beta1
