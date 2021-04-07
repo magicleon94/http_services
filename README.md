@@ -129,5 +129,42 @@ void main() async {
 }
 ```
 
+## Notes
+There might be some cases where the JSON response is not like this:
+```json
+{
+  "data": [{"name": "Bob"},{"name":"Alice"}],
+}
+```
+
+This will not be treated as a JSON since it's not a `Map<String,dynamic>` but it's a `List<Map<String,dynamic>>`.
+A solution might be to use the `orElse` parameter when performing the HTTP request. Remember that `orElse` is executed to map any response body that's not `Map<String,dynamic>`.
+
+Similarly, if you ever find yourself in need of sending a JSON like the one above, a solution might be to override the `onData` method of `RequestBase` in your request object and then using the `*data` version of the request.
+For example:
+
+```dart
+
+class User{
+  final String name;
+  User(this.name);
+
+  Map<String,dynamic> toJson() => {'name': name};
+}
+
+class UsersToSend extends RequestBase{
+  final List<User> users;
+  UsersToSend(this.users);
+
+  @override
+  Map<String,dynamic> toJson() => {};
+
+  @override
+  List<User> toData() => users;
+}
+```
+
+and then use `postData` instead of using `postJson` in your service.
+
 ## Contributors 🚀
 - [Debora Del Vecchio](https://github.com/deb-95)

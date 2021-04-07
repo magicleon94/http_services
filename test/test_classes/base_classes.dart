@@ -1,4 +1,5 @@
 import 'package:http_services/http_services.dart';
+
 import '../base_test_constants.dart';
 
 class TestRequest extends RequestBase {
@@ -49,7 +50,7 @@ class StringRequest extends RequestBase {
 }
 
 class TestResponse extends ResponseBase {
-  final String id;
+  final String? id;
 
   TestResponse({this.id});
 

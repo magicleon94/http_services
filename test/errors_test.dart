@@ -1,24 +1,46 @@
+import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:http_services/http_services.dart';
 import 'package:test/test.dart';
 
-import 'package:dio/dio.dart';
-import 'package:http_services/http_services.dart';
-
-import 'test_classes/error_classes.dart';
 import 'errors_test_constants.dart';
+import 'test_classes/error_classes.dart';
 
 void main() {
   final dio = Dio();
   final dioAdapter = DioAdapter();
   final testService = ErrorService(dio);
 
-  setUp(() {
-    dio.httpClientAdapter = dioAdapter;
-    dioAdapter.onGet(dioErrorRoute).throws(500, DioError(error: "Test"));
-    dioAdapter.onGet(statusCodeErrorRoute).reply(200, {});
-    dioAdapter.onGet(wrongResponseRoute).reply(200, "Not_A_Json");
-    dioAdapter.onGet(wrongJsonDataRoute).reply(200, {"id": "Not_A_Double"});
-  });
+  setUp(
+    () {
+      dio.httpClientAdapter = dioAdapter;
+      dioAdapter.onGet(
+        dioErrorRoute,
+        (handler) => handler.throws(
+          500,
+          DioError(
+            error: "Test",
+            requestOptions: RequestOptions(path: dioErrorRoute),
+          ),
+        ),
+      );
+      dioAdapter.onGet(
+        statusCodeErrorRoute,
+        (handler) => handler.reply(
+          200,
+          {},
+        ),
+      );
+      dioAdapter.onGet(
+        wrongResponseRoute,
+        (handler) => handler.reply(200, "Not_A_Json"),
+      );
+      dioAdapter.onGet(
+        wrongJsonDataRoute,
+        (handler) => handler.reply(200, {"id": "Not_A_Double"}),
+      );
+    },
+  );
 
   group("HttpServiceBase", () {
     test("should throw ApiException when DioError occures", () async {

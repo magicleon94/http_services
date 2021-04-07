@@ -20,6 +20,8 @@ void main() async {
       "title: ${response1.title}\n"
       "completed: ${response1.completed}",
     );
+    final response2 = await service.postBoh();
+    print(response2);
   } on HttpServiceException catch (e) {
     print('Service exception: ${e.runtimeType}');
   }

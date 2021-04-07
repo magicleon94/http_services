@@ -1,3 +1,7 @@
+# 2.0.0-beta2
+Updated readme with some notes.
+# 2.0.0-beta1
+Added sound null safety.
 # 1.2.6
 * Added unit tests [#3](https://github.com/magicleon94/http_services/pull/3)
 # 1.2.5+1
