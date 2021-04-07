@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:disposable_object/disposable_object.dart';
 import 'package:http_services/src/models/exceptions/api_exception.dart';
 import 'package:http_services/src/models/exceptions/http_service_exception.dart';
+import 'package:http_services/src/models/exceptions/request_canceled_exception.dart';
 import 'package:http_services/src/models/exceptions/response_mapping_exception.dart';
 import 'package:http_services/src/models/exceptions/unexpected_status_code_exception.dart';
 import 'package:http_services/src/models/request_base.dart';
@@ -70,6 +71,9 @@ abstract class HttpServiceBase extends DisposableObject {
       _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
       return _mapResponse(response, mapper, orElse);
     } on DioError catch (error) {
+      if (error.type == DioErrorType.cancel) {
+        throw RequestCanceledException(error);
+      }
       throw ApiException.fromDioError(error);
     } on HttpServiceException catch (_) {
       rethrow;

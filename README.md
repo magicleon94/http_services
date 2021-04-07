@@ -34,6 +34,9 @@ This is thrown when expected HTTP code doesn't match the received one.
 ### ResponseMappingException:
 This is thrown when an error occurs while mapping the response.
 
+### RequestCanceledException:
+This is thrown when a request is canceled. 
+
 # HttpServiceBase
 Every service should `extend` this.
 
