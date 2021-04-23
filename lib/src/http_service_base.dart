@@ -77,8 +77,8 @@ abstract class HttpServiceBase extends DisposableObject {
       throw ApiException.fromDioError(error);
     } on HttpServiceException catch (_) {
       rethrow;
-    } catch (e) {
-      throw ResponseMappingException(e.toString());
+    } catch (e, s) {
+      throw ResponseMappingException(e.toString(), s);
     }
   }
 

@@ -1,3 +1,5 @@
+# 2.0.1
+* ResponseMappingException now includes the stacktrace
 # 2.0.0
 * Sound null safety migration
 * Added RequestCanceledException to catch when a request is canceled
