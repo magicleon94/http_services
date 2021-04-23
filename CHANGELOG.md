@@ -1,3 +1,5 @@
+# 2.0.2
+* Added `allowCache` parameter
 # 2.0.1
 * ResponseMappingException now includes the stacktrace
 # 2.0.0

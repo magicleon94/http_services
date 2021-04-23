@@ -65,10 +65,13 @@ abstract class HttpServiceBase extends DisposableObject {
     T Function(Map<String, dynamic>, Response response) mapper,
     T Function(dynamic, Response response)? orElse,
     int expectedStatusCode,
+    bool allowCache,
   ) async {
     try {
       final response = await performer();
-      _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
+      if (!(allowCache && response.statusCode == 304)) {
+        _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
+      }
       return _mapResponse(response, mapper, orElse);
     } on DioError catch (error) {
       if (error.type == DioErrorType.cancel) {
@@ -89,6 +92,8 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip the [expectedStatusCode] check when the response
+  /// is a cached one (HTTP code 304)
   @protected
   Future<T> getQuery<T extends ResponseBase>({
     required RequestBase request,
@@ -97,6 +102,7 @@ abstract class HttpServiceBase extends DisposableObject {
     Options? options,
     bool cancelOnDispose = true,
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.get(
           request.endpoint,
@@ -104,7 +110,7 @@ abstract class HttpServiceBase extends DisposableObject {
           options: options,
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "POST" method.
@@ -115,6 +121,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> postData<T extends ResponseBase>({
     required RequestBase request,
@@ -124,6 +131,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.post(
           request.endpoint,
@@ -132,7 +140,7 @@ abstract class HttpServiceBase extends DisposableObject {
           options: options,
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "POST" method and using the JSON content type
@@ -143,6 +151,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> postJson<T extends ResponseBase>({
     required RequestBase request,
@@ -152,6 +161,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.post(
           request.endpoint,
@@ -165,7 +175,7 @@ abstract class HttpServiceBase extends DisposableObject {
               ),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "DELETE" method.
@@ -176,6 +186,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> deleteData<T extends ResponseBase>({
     required RequestBase request,
@@ -185,6 +196,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.delete(
           request.endpoint,
@@ -193,7 +205,7 @@ abstract class HttpServiceBase extends DisposableObject {
           options: options,
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "DELETE" method and using the JSON content type
@@ -204,6 +216,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> deleteJson<T extends ResponseBase>({
     required RequestBase request,
@@ -213,6 +226,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.delete(
           request.endpoint,
@@ -222,7 +236,7 @@ abstract class HttpServiceBase extends DisposableObject {
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "PUT" method.
@@ -233,6 +247,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> putData<T extends ResponseBase>({
     required RequestBase request,
@@ -242,6 +257,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.put(
           request.endpoint,
@@ -250,7 +266,7 @@ abstract class HttpServiceBase extends DisposableObject {
           options: options,
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "PUT" method and using the JSON content type
@@ -261,6 +277,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> putJson<T extends ResponseBase>({
     required RequestBase request,
@@ -270,6 +287,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.put(
           request.endpoint,
@@ -279,7 +297,7 @@ abstract class HttpServiceBase extends DisposableObject {
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "PATCH" method.
@@ -290,6 +308,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> patchData<T extends ResponseBase>({
     required RequestBase request,
@@ -299,6 +318,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.patch(
           request.endpoint,
@@ -307,7 +327,7 @@ abstract class HttpServiceBase extends DisposableObject {
           options: options,
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 
   /// Perform a query using the "PATCH" method and using the JSON content type
@@ -318,6 +338,7 @@ abstract class HttpServiceBase extends DisposableObject {
   /// Optionally you can specify [options] to pass to Dio
   /// [cancelOnDispose] lets you cancel the request if this service is disposed
   /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip che expectedStatusCode when response
   @protected
   Future<T> patchJson<T extends ResponseBase>({
     required RequestBase request,
@@ -327,6 +348,7 @@ abstract class HttpServiceBase extends DisposableObject {
     bool cancelOnDispose = true,
     Map<String, dynamic> queryParameters = const {},
     int expectedStatusCode = 200,
+    bool allowCache = true,
   }) async {
     final performer = () => dioInstance.patch(
           request.endpoint,
@@ -336,6 +358,6 @@ abstract class HttpServiceBase extends DisposableObject {
               Options(contentType: 'application/json'),
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
-    return _perform(performer, mapper, orElse, expectedStatusCode);
+    return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
   }
 }
