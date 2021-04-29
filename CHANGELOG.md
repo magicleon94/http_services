@@ -1,3 +1,5 @@
+# 2.0.3
+* `networkError` in `ApiError` is now non nullable
 # 2.0.2
 * Added `allowCache` parameter
 # 2.0.1

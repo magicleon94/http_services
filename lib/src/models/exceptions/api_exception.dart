@@ -15,7 +15,7 @@ extension DioExtensions on DioError {
 ///Thrown then something goes wrong with the request
 class ApiException extends HttpServiceException {
   /// [networkError] signals if there was an outage in connection
-  final bool? networkError;
+  final bool networkError;
 
   /// [httpCode] is the received HTTP status code
   final int? httpCode;
@@ -32,7 +32,7 @@ class ApiException extends HttpServiceException {
   final Exception? error;
 
   ApiException({
-    this.networkError,
+    required this.networkError,
     this.httpCode,
     this.httpMessage,
     this.body,
