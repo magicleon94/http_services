@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:disposable_object/disposable_object.dart';
 import 'package:http_services/src/models/exceptions/api_exception.dart';
+import 'package:http_services/src/models/exceptions/download_exception.dart';
 import 'package:http_services/src/models/exceptions/http_service_exception.dart';
 import 'package:http_services/src/models/exceptions/request_canceled_exception.dart';
 import 'package:http_services/src/models/exceptions/response_mapping_exception.dart';
@@ -359,5 +360,52 @@ abstract class HttpServiceBase extends DisposableObject {
           cancelToken: cancelOnDispose ? getNextToken() : null,
         );
     return _perform(performer, mapper, orElse, expectedStatusCode, allowCache);
+  }
+
+  /// Downloads a file.
+  /// The query parameters are extracted from [request]'s toJson
+  /// Eventual additional data is extracter from [request]'s toData
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip the [expectedStatusCode] check when the response
+  /// is a cached one (HTTP code 304)
+  /// [onReceiveProgress] allows to know about the status of the download
+  /// [deleteOnError] deletes the file if an error occurs
+  @protected
+  Future<void> download({
+    required RequestBase request,
+    required String path,
+    Options? options,
+    bool cancelOnDispose = true,
+    int expectedStatusCode = 200,
+    bool allowCache = true,
+    bool deleteOnError = true,
+    void Function(int count, int total)? onReceiveProgress,
+  }) async {
+    try {
+      final response = await dioInstance.download(
+        request.endpoint,
+        path,
+        queryParameters: request.toJson(),
+        options: options,
+        cancelToken: cancelOnDispose ? getNextToken() : null,
+        deleteOnError: deleteOnError,
+        onReceiveProgress: onReceiveProgress,
+        data: request.toData(),
+      );
+      if (!(allowCache && response.statusCode == 304)) {
+        _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
+      }
+    } on DioError catch (error) {
+      if (error.type == DioErrorType.cancel) {
+        throw RequestCanceledException(error);
+      }
+      throw ApiException.fromDioError(error);
+    } on HttpServiceException catch (_) {
+      rethrow;
+    } catch (e, s) {
+      throw DownloadException(e.toString(), s);
+    }
   }
 }
