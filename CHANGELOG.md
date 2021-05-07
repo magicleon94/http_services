@@ -1,3 +1,5 @@
+# 2.1.0
+Added `download` and `getBytes` features.
 # 2.0.3
 * `networkError` in `ApiError` is now non nullable
 # 2.0.2

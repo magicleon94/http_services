@@ -51,6 +51,7 @@ To make a request within you service, you can use one of the following:
 * `patchData`: perform a `PATCH` request
 * `patchJson`: perform a `PATCH` request **with a JSON body**
 * `download`: downloads a file
+* `getBytes`: gets bytes from an endpoint
 
 # Example
 ```dart

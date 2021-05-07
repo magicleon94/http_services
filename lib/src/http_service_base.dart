@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:disposable_object/disposable_object.dart';
+import 'package:http_services/src/models/bytes_response.dart';
 import 'package:http_services/src/models/exceptions/api_exception.dart';
 import 'package:http_services/src/models/exceptions/download_exception.dart';
 import 'package:http_services/src/models/exceptions/http_service_exception.dart';
@@ -47,9 +48,9 @@ abstract class HttpServiceBase extends DisposableObject {
 
   T _mapResponse<T extends ResponseBase>(
       Response response,
-      T Function(Map<String, dynamic>, Response response) mapper,
+      T Function(Map<String, dynamic>, Response response)? mapper,
       T Function(dynamic, Response response)? orElse) {
-    if (response.data is Map<String, dynamic>) {
+    if (mapper != null && response.data is Map<String, dynamic>) {
       return mapper(response.data, response);
     } else {
       if (orElse != null) {
@@ -63,7 +64,7 @@ abstract class HttpServiceBase extends DisposableObject {
 
   Future<T> _perform<T extends ResponseBase>(
     Future<Response> Function() performer,
-    T Function(Map<String, dynamic>, Response response) mapper,
+    T Function(Map<String, dynamic>, Response response)? mapper,
     T Function(dynamic, Response response)? orElse,
     int expectedStatusCode,
     bool allowCache,
@@ -407,5 +408,36 @@ abstract class HttpServiceBase extends DisposableObject {
     } catch (e, s) {
       throw DownloadException(e.toString(), s);
     }
+  }
+
+  /// Get bytes from an api.
+  /// The query parameters are extracted from [request]
+  /// Optionally you can specify [options] to pass to Dio
+  /// [cancelOnDispose] lets you cancel the request if this service is disposed
+  /// [expectedStatusCode] to check the result of the request
+  /// set [allowCache] to `true` to skip the [expectedStatusCode] check when the response
+  /// is a cached one (HTTP code 304)
+  @protected
+  Future<BytesResponse> getBytes({
+    required RequestBase request,
+    Options? options,
+    bool cancelOnDispose = true,
+    int expectedStatusCode = 200,
+    bool allowCache = true,
+  }) async {
+    final performer = () => dioInstance.get<List<int>>(
+          request.endpoint,
+          queryParameters: request.toJson(),
+          options: options?.copyWith(responseType: ResponseType.bytes) ??
+              Options(responseType: ResponseType.bytes),
+          cancelToken: cancelOnDispose ? getNextToken() : null,
+        );
+    return _perform(
+      performer,
+      null,
+      (data, _) => BytesResponse(data),
+      expectedStatusCode,
+      allowCache,
+    );
   }
 }
