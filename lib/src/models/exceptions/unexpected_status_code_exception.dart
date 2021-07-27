@@ -8,4 +8,7 @@ class UnexpectedStatusCodeException extends HttpServiceException {
   final int actual;
 
   UnexpectedStatusCodeException(this.expected, this.actual);
+
+  @override
+  String toString() => 'Actual: $actual - Expected: $expected';
 }

@@ -6,4 +6,9 @@ class ResponseMappingException extends HttpServiceException {
   final StackTrace stackTrace;
 
   ResponseMappingException(this.message, this.stackTrace);
+
+  @override
+  String toString() {
+    return '$message\n\n$stackTrace';
+  }
 }

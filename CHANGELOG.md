@@ -1,3 +1,5 @@
+# 2.1.1
+Added `toString`implementation for `ResponseMappingException` and `UnexpectedStatusCodeException`.
 # 2.1.0
 Added `download` and `getBytes` features.
 # 2.0.3
