@@ -3,11 +3,11 @@ import 'package:http_services/src/models/exceptions/http_service_exception.dart'
 
 import 'socket_exception.dart' if (dart.library.io) 'dart:io';
 
-extension DioExtensions on DioError {
+extension DioExtensions on DioException {
   bool get isNetworkError {
-    return type == DioErrorType.connectTimeout ||
-        type == DioErrorType.sendTimeout ||
-        type == DioErrorType.receiveTimeout ||
+    return type == DioExceptionType.connectionTimeout ||
+        type == DioExceptionType.sendTimeout ||
+        type == DioExceptionType.receiveTimeout ||
         error is SocketException;
   }
 }
@@ -39,7 +39,7 @@ class ApiException extends HttpServiceException {
     this.error,
   });
 
-  factory ApiException.fromDioError(DioError dioError) {
+  factory ApiException.fromDioError(DioException dioError) {
     return ApiException(
       httpCode: dioError.response?.statusCode ?? -1,
       httpMessage: dioError.response?.statusMessage ?? '-',

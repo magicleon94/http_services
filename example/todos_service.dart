@@ -1,4 +1,3 @@
-import 'package:dio/src/dio.dart';
 import 'package:http_services/http_services.dart';
 
 import 'todos_request.dart';

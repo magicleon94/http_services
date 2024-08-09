@@ -75,8 +75,8 @@ abstract class HttpServiceBase extends DisposableObject {
         _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
       }
       return _mapResponse(response, mapper, orElse);
-    } on DioError catch (error) {
-      if (error.type == DioErrorType.cancel) {
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.cancel) {
         throw RequestCanceledException(error);
       }
       throw ApiException.fromDioError(error);
@@ -398,8 +398,8 @@ abstract class HttpServiceBase extends DisposableObject {
       if (!(allowCache && response.statusCode == 304)) {
         _assertStatusCode(expectedStatusCode, response.statusCode ?? -1);
       }
-    } on DioError catch (error) {
-      if (error.type == DioErrorType.cancel) {
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.cancel) {
         throw RequestCanceledException(error);
       }
       throw ApiException.fromDioError(error);
