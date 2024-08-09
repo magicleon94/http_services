@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:http_services/http_services.dart';
 import 'package:test/test.dart';
@@ -8,7 +7,7 @@ import 'test_classes/error_classes.dart';
 
 void main() {
   final dio = Dio();
-  final dioAdapter = DioAdapter();
+  final dioAdapter = DioAdapter(dio: dio);
   final testService = ErrorService(dio);
 
   setUp(
@@ -18,7 +17,7 @@ void main() {
         dioErrorRoute,
         (handler) => handler.throws(
           500,
-          DioError(
+          DioException(
             error: "Test",
             requestOptions: RequestOptions(path: dioErrorRoute),
           ),

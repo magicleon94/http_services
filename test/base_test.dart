@@ -8,7 +8,7 @@ import 'test_classes/base_classes.dart';
 
 void main() {
   final dio = Dio();
-  final dioAdapter = DioAdapter();
+  final dioAdapter = DioAdapter(dio: dio);
   final testService = TestService(dio);
 
   setUp(() {
