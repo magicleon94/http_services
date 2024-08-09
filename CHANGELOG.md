@@ -1,3 +1,5 @@
+# 3.0.1
+* Replaced DioError with DioException as it was deprecated
 # 3.0.0
 * Bumped dio version to 5.5.0+1
 * Bumped http_mock_adapter to ^0.6.1

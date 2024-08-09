@@ -79,7 +79,7 @@ abstract class HttpServiceBase extends DisposableObject {
       if (error.type == DioExceptionType.cancel) {
         throw RequestCanceledException(error);
       }
-      throw ApiException.fromDioError(error);
+      throw ApiException.fromDioException(error);
     } on HttpServiceException catch (_) {
       rethrow;
     } catch (e, s) {
@@ -402,7 +402,7 @@ abstract class HttpServiceBase extends DisposableObject {
       if (error.type == DioExceptionType.cancel) {
         throw RequestCanceledException(error);
       }
-      throw ApiException.fromDioError(error);
+      throw ApiException.fromDioException(error);
     } on HttpServiceException catch (_) {
       rethrow;
     } catch (e, s) {

@@ -39,7 +39,7 @@ class ApiException extends HttpServiceException {
     this.error,
   });
 
-  factory ApiException.fromDioError(DioException dioError) {
+  factory ApiException.fromDioException(DioException dioError) {
     return ApiException(
       httpCode: dioError.response?.statusCode ?? -1,
       httpMessage: dioError.response?.statusMessage ?? '-',
