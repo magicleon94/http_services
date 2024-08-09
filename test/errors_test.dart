@@ -42,7 +42,7 @@ void main() {
   );
 
   group("HttpServiceBase", () {
-    test("should throw ApiException when DioError occures", () async {
+    test("should throw ApiException when DioException occures", () async {
       expect(
         () async => await testService.getErrorByRoute(dioErrorRoute),
         throwsA(TypeMatcher<ApiException>()),
