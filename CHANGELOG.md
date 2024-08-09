@@ -1,3 +1,7 @@
+# 3.0.0
+* Bumped dio version to 5.5.0+1
+* Bumped http_mock_adapter to ^0.6.1
+* Replaced old pedantic dependency with lints
 # 2.1.1
 Added `toString`implementation for `ResponseMappingException` and `UnexpectedStatusCodeException`.
 # 2.1.0
